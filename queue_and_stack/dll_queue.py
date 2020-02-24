@@ -10,22 +10,14 @@ class Queue: #fifo
         self.storage = DoublyLinkedList()
 
     def enqueue(self, value):
-      #enqueue equivalent of add_to_head
-      # new_queue_node = DoublyLinkedList(value)
-      if self.size == 0:
-       return 
-      else:
-        self.storage.add_to_head(value)
-        self.size = self.storage.length
-    
+      self.size += 1
+      self.storage.add_to_tail(value)
   
     def dequeue(self):
-      #equates to pop_from_tail
-      if self.size == 0:
-        return 
-      self.storage.remove_from_tail()
-      self.size = self.storage.length
+      if not self.storage.head:
+        return None
+      self.size -= 1
+      return self.storage.remove_from_head()
       
-
     def len(self):
       return self.size
