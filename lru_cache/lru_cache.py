@@ -20,9 +20,15 @@ class LRUCache:
     key-value pair doesn't exist in the cache.
     """
     def get(self, key):
-      #Get the value (will always be positive) of the key
-      #if the key exists in the cache, otherwise return -1.
-        pass
+      if not key in self.cache and key < 0:
+        return None
+      else:
+        if key in self.cache:
+          current_node = self.storage.head
+          for key in current_node.value.keys():
+              self.storage.add_to_tail(key)
+              return current_node.value
+          
 
     """
     Adds the given key-value pair to the cache. The newly-
