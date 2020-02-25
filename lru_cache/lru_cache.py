@@ -10,24 +10,26 @@ class LRUCache:
     """
     def __init__(self, limit=10):
       self.limit = limit
+      self.length = 0
       self.storage = DoublyLinkedList()
+      self.cache = {}
+      
 
     """
     Retrieves the value associated with the given key. Also
     needs to move the key-value pair to the end of the order
-    such that the pair is considered most-recently used.
+    such that the pair is considered.
     Returns the value associated with the key or None if the
     key-value pair doesn't exist in the cache.
     """
     def get(self, key):
-      if not key in self.cache and key < 0:
+      if key not in self.cache: 
         return None
-      else:
-        if key in self.cache:
-          current_node = self.storage.head
-          for key in current_node.value.keys():
-              self.storage.add_to_tail(key)
-              return current_node.value
+      if self.length > 0 and key in self.cache:
+        node = self.storage.head
+        node.value == key
+        self.storage.move_to_end(self.cache[key]) # most-recently used
+        return self.cache[key].value
           
 
     """
@@ -41,8 +43,24 @@ class LRUCache:
     the newly-specified value.
     """
     def set(self, key, value):
-      # Set or insert the value if the key is not already present.
-      #  When the cache reached its capacity, it should invalidate 
-      # the least recently used item before inserting a new item.
-      # The cache is initialized with a positive capacity.
-        pass
+      #if the key already exists in cache
+      if key in self.cache: 
+        self.storage.move_to_end(self.cache[key])
+        #overwrite old value with newly specified value
+        self.cache[key].value = value
+      
+      #if the cache is at max capacity
+      elif self.length == self.limit:
+       deleted_key = self.storage.remove_from_head()
+       for key, value in self.cache.items():
+         if value.value != deleted_key:
+           self.storage.add_to_tail(value)
+           self.cache[key] = self.storage.tail
+      
+      #else key does not exist and there is no max capacity
+      else:
+        self.storage.add_to_tail(value)
+        self.cache[key] = self.storage.head
+        self.length += 1     
+        
+  
