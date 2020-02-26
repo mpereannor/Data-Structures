@@ -25,11 +25,9 @@ class LRUCache:
     def get(self, key):
       if key not in self.cache: 
         return None
-      if self.length > 0 and key in self.cache:
-        node = self.storage.head
-        node.value == key
+      elif self.length > 0 and key in self.cache:
         self.storage.move_to_end(self.cache[key]) # most-recently used
-        return self.cache[key].value
+        return key
           
 
     """
